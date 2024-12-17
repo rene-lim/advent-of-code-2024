@@ -6,17 +6,9 @@ def isOutOfBounds(i,j,maxRow,maxCol):
 def calculateDistance(coordinate):
     return math.sqrt(coordinate[0]**2 + coordinate[1]**2)
 
-def getAntinodesPart1(first, second, dir, numTimesToExtend):
+def getAntinodes(first, second, dir, defRange):
     antinodeSet = set()
-    for i in range(1, numTimesToExtend+1):
-        antinode1 = (second[0]+i*dir[0], second[1]+i*dir[1])
-        antinode2 = (first[0]-i*dir[0], first[1]-i*dir[1])
-        antinodeSet.update({antinode1, antinode2})
-    return antinodeSet
-
-def getAntinodesPart2(first, second, dir, numTimesToExtend):
-    antinodeSet = set()
-    for i in range(numTimesToExtend):
+    for i in defRange:
         antinode1 = (second[0]+i*dir[0], second[1]+i*dir[1])
         antinode2 = (first[0]-i*dir[0], first[1]-i*dir[1])
         antinodeSet.update({antinode1, antinode2})
@@ -34,8 +26,9 @@ def findAntinodes(coordinates, maxRow, maxCol):
             first = coordinates[i]
             second = coordinates[j]
             dir = (second[0]-first[0], second[1]-first[1])
-            numTimesToExtend = extendAntinodes(dir, maxRow, maxCol)
-            antinodeSet.update(getAntinodesPart2(first, second, dir, numTimesToExtend))
+            part1Range = range(1,2)
+            part2Range = range(extendAntinodes(dir, maxRow, maxCol))
+            antinodeSet.update(getAntinodes(first, second, dir, part2Range))
     return antinodeSet
 
 def part1(antennas, maxRow, maxCol):
